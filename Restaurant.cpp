@@ -111,11 +111,16 @@ class imp_res : public Restaurant
 			for(int i = 0;i<min(num,count);i++){ // delete people in data & res
 				for(int j = 0;j<count;j++){
 					if(datalog->name==resubb->name){
-						resubb->next->prev = resubb->prev;
-						resubb->prev->next = resubb->next;
-						count--;
-						// delete [] resubb;
-						datalog = datalog->next;
+						if(count == 1){
+							res = nullptr;
+							count--;
+						} else {
+							resubb->next->prev = resubb->prev;
+							resubb->prev->next = resubb->next;
+							count--;
+							delete[] resubb;
+							datalog = datalog->next;
+						}
 					}
 				}
 			}
