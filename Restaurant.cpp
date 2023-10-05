@@ -1,5 +1,5 @@
 #include "main.h"
-
+const int MAXSIZE = 30;
 class imp_res : public Restaurant
 {
 	private:
