@@ -14,7 +14,8 @@ void simulate(string filename, imp_res* r)
 		if(str == "MAXSIZE")
 		{
 			ss >> maxsize;
-			MAXSIZE = stoi(maxsize); 
+			ss >> MAXSIZE;
+			r->MAXSIZE = stoi(maxsize);
     	}
         else if(str == "RED") // RED <NAME> <ENERGY>
         {
