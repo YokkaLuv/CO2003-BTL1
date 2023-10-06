@@ -1,6 +1,5 @@
 #include "main.h"
 
-const int MAXSIZE = 30;
 class imp_res : public Restaurant
 {
 	private:
@@ -189,7 +188,7 @@ class imp_res : public Restaurant
 		void LIGHT(int num)
 		{
 			cout << "light " << num << endl;
-			if(num==0)
+			if(num == 0)
 			{
 				customer *quesub1 = queueing;
 				for(int i = 0; i < queued; ++i)

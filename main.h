@@ -11,6 +11,7 @@ class Restaurant {
 	public:
 		Restaurant() {};
 		~Restaurant() {};
+		int MAXSIZE;
 		virtual void RED(string name, int energy) = 0;
 		virtual void BLUE(int num) = 0;
 		virtual void PURPLE() = 0;
