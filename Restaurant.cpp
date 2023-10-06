@@ -135,6 +135,7 @@ class imp_res : public Restaurant
 				}
 			}
 		}
+
 		void BLUE(int num)
 		{
 			customer *resubb = res;
@@ -169,22 +170,56 @@ class imp_res : public Restaurant
 				queueing = queueing->next;
 			}
 		}
+
 		void PURPLE()
 		{
-			cout << "purple"<< endl;
+			/*
+			void shellsort(Node*& pHead)
+			{
+			    int n = 0;
+			    Node* cur = pHead;
+			    while (cur) {
+			        n++;
+			        cur = cur->pNext;
+			    }
+			    int gap = n / 2;
+			    while (gap > 0) {
+			        for (int i = gap; i < n; i++) {
+			            Node* temp = pHead;
+			            for (int j = 0; j < i - gap; j++) {
+			                temp = temp->pNext;
+			            }
+			            Node* temp2 = temp->pNext;
+			            while (temp2 && temp2->data < temp->data) {
+			                swap(temp->data, temp2->data);
+			                temp = pHead;
+			                for (int j = 0; j < i - gap; j++) {
+			                    temp = temp->pNext;
+			                }
+			                temp2 = temp->pNext;
+			            }
+			        }
+			        gap /= 2;
+			    }
+			}
+			*/
 		}
+
 		void REVERSAL()
 		{
 			cout << "reversal" << endl;
 		}
+
 		void UNLIMITED_VOID()
 		{
 			cout << "unlimited_void" << endl;
 		}
+
 		void DOMAIN_EXPANSION()
 		{
 			cout << "domain_expansion" << endl;
 		}
+
 		void LIGHT(int num)
 		{
 			cout << "light " << num << endl;
