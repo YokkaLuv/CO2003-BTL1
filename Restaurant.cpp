@@ -8,6 +8,7 @@ class imp_res : public Restaurant
 		customer *res = nullptr; //restaurant customer
 		customer *queueing = nullptr; //queueing
 		customer *datalog = nullptr; //data of people going in restaurant 
+		customer *prevcus = nullptr; //current customer
 	public:
 		imp_res() {};
 		
@@ -39,19 +40,21 @@ class imp_res : public Restaurant
 
         int number_in_queue(customer* cus)
         {
-            int count = 0;
-            while(cus)
-            {
-                count++;
-                cus = cus->next;
-            }
-            return count;
+            int cnt = 0;
+			customer* tmp = cus;
+			while(tmp->next != cus)
+			{
+				cnt++;
+				tmp = tmp->next;
+			}
+			cnt++;
+            return cnt;
         }
 		
 		void RED(string name, int energy)
 		{
 			cout << name << " " << energy << endl;
-            customer* cus = new customer (name, energy, nullptr, nullptr);
+			customer* cus = new customer (name, energy, nullptr, nullptr);
             if(energy == 0) return;
             if(is_valid_name(name) == false) return;
 			if(namecheck(cus, res, queueing) == false) return;
@@ -61,33 +64,40 @@ class imp_res : public Restaurant
                 res = cus;
                 res->next = res;
                 res->prev = res;
-                count++;
+				count++;
             }
-            else if(number_in_queue(res) > 0 && number_in_queue(res) < MAXSIZE/2)
-            {
-                customer* restmp = res;
-                while(restmp->next != res)
-                {
-                    restmp = restmp->next;
-                }
-                restmp->next = cus;
-                cus->prev = restmp;
-                cus->next = res;
-                res->prev = cus;
-                count++;
-            }
+			else if(number_in_queue(res) > 0 && number_in_queue(res) < MAXSIZE/2)
+			{
+				if(prevcus->energy <= cus->energy)
+				{
+					cus->next = prevcus->next;
+					cus->prev = prevcus;
+					prevcus->next = cus;
+					cus->next->prev = cus;
+					count++;
+				}
+				else if(prevcus->energy > cus->energy)
+				{
+					cus->next = prevcus;
+					cus->prev = prevcus->prev;
+					prevcus->prev = cus;
+					cus->prev->next = cus;
+					count++;
+				}
+			}
             else if(number_in_queue(res) >= MAXSIZE/2 && number_in_queue(res) < MAXSIZE)
             {
-                customer* restmp = res;
+                customer* restmp = prevcus;
                 int dif = 0;
                 customer* max_dif = nullptr;
-                while(restmp->next != res) 
+                while(restmp->next != prevcus) 
                 {
-                    if(abs(restmp->energy + cus->energy) > abs(dif))
+                    if(abs(restmp->energy - cus->energy) > abs(dif))
                     {
-                        dif = restmp->energy + cus->energy;
+                        dif = restmp->energy - cus->energy;
                         max_dif = restmp;
                     }
+					restmp = restmp->next;
                 }
                 if(dif < 0) 
                 {
@@ -97,7 +107,7 @@ class imp_res : public Restaurant
                     max_dif->prev = cus;
                     count++;
                 }
-                else
+                else if(dif >= 0)
                 {
                     cus->next = max_dif->next;
                     cus->prev = max_dif;
@@ -109,19 +119,26 @@ class imp_res : public Restaurant
             }
             else if(number_in_queue(res) == MAXSIZE)
             {
-                if(number_in_queue(queueing) < MAXSIZE)
-                {
-                    customer* quetmp = queueing;
-                    while(quetmp->next)
-                    {
-                        quetmp = quetmp->next;
-                    }
-                    quetmp->next = cus;
-                    cus->prev = quetmp;
-                    queued++;
-                }
-                else return;
-            }
+				if(number_in_queue(queueing) == 0)
+				{
+					queueing = cus;
+					queueing->next = queueing;
+					queueing->prev = queueing;
+					queued++;
+				}
+				else if(number_in_queue(queueing) > 0 && number_in_queue(queueing) < MAXSIZE) 
+				{
+                	customer* quetmp = queueing;
+                	while(quetmp->next)
+                	{
+                    	quetmp = quetmp->next;
+                	}
+                	quetmp->next = cus;
+                	cus->prev = quetmp;
+                	queued++;
+				}
+			}
+			prevcus = cus;
 		}
 
 		void BLUE(int num)
@@ -211,34 +228,22 @@ class imp_res : public Restaurant
 		void LIGHT(int num)
 		{
 			cout << "light " << num << endl;
-			if(num == 0)
-			{
-				customer *quesub1 = queueing;
-				for(int i = 0; i < queued; ++i)
-				{
-					quesub1->print();
-					quesub1 = quesub1->next;
+			if (num > 0) {
+				// print information of customers at table in clockwise order
+				for (int i = count - 1; i >= 0; i--) {
+					cout << res[i].name << "-" << res[i].energy << "/n";
 				}
-			} 
-			else 
-			{
-				if(num > 0)
-				{
-					customer *resub = res;
-					for(int i = 0; i < count; ++i)
-					{
-						resub->print();
-						resub = resub->next;
-					}
-				} 
-				else 
-				{
-					customer *resub = res;
-					for(int i = 0; i < count; ++i)
-					{
-						resub->print();
-						resub = resub->prev;
-					}
+			}
+			else if (num < 0) {
+				// print information of customers at table in counterclockwise order
+				for (int i = 0; i < count; i++) {
+					cout << res[i].name << "-" << res[i].energy << "/n";
+				}
+			}
+			else {
+				// print information of customers in queue in order
+				for (int i = 0; i < queued; i++) {
+					cout << queueing[i].name << "-" << queueing[i].energy << "/n";
 				}
 			}
 		}

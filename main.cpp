@@ -8,13 +8,11 @@ void simulate(string filename, imp_res* r)
 {
 	ifstream ss(filename);
 	string str, maxsize, name, energy, num;
-	int MAXSIZE;
 	while(ss >> str)
 	{ 
 		if(str == "MAXSIZE")
 		{
 			ss >> maxsize;
-			ss >> MAXSIZE;
 			r->MAXSIZE = stoi(maxsize);
     	}
         else if(str == "RED") // RED <NAME> <ENERGY>
@@ -44,7 +42,7 @@ void simulate(string filename, imp_res* r)
     	{
     			r->DOMAIN_EXPANSION();
     	}
-    	else // LIGHT <NUM>
+    	else if(str == "LIGHT")// LIGHT <NUM>
     	{
                 ss >> num;
     			r->LIGHT(stoi(num));
