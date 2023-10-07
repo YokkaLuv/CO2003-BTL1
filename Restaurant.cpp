@@ -228,22 +228,30 @@ class imp_res : public Restaurant
 		void LIGHT(int num)
 		{
 			cout << "light " << num << endl;
+			customer* restmp = prevcus;
+			customer* quetmp = queueing;
 			if (num > 0) {
 				// print information of customers at table in clockwise order
-				for (int i = count - 1; i >= 0; i--) {
-					cout << res[i].name << "-" << res[i].energy << "\n";
+				while(restmp->next != prevcus)
+				{
+					restmp->print();
+					restmp = restmp->next;
 				}
 			}
 			else if (num < 0) {
 				// print information of customers at table in counterclockwise order
-				for (int i = 0; i < count; i++) {
-					cout << res[i].name << "-" << res[i].energy << "\n";
+				while(restmp->prev != prevcus)
+				{
+					restmp->print();
+					restmp = restmp->prev;
 				}
 			}
-			else {
+			else if(num == 0){
 				// print information of customers in queue in order
-				for (int i = 0; i < queued; i++) {
-					cout << queueing[i].name << "-" << queueing[i].energy << "\n";
+				while(quetmp->next != queueing)
+				{
+					quetmp->print();
+					quetmp = quetmp->next;
 				}
 			}
 		}
