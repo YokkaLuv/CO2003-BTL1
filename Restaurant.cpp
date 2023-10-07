@@ -15,13 +15,13 @@ class imp_res : public Restaurant
 		bool namecheck(customer* cus, customer* res, customer* queueing)
 		{
             customer* restmp = res;
-            while(restmp)
+            while(restmp->next != res)
             {
                 if(restmp->name == cus->name) return false;
                 restmp = restmp->next;
             }
             customer* quetmp = queueing;
-            while(quetmp)
+            while(quetmp->next != queueing)
             {
                 if(quetmp->name == cus->name) return false;
                 quetmp = quetmp->next;
@@ -231,19 +231,19 @@ class imp_res : public Restaurant
 			if (num > 0) {
 				// print information of customers at table in clockwise order
 				for (int i = count - 1; i >= 0; i--) {
-					cout << res[i].name << "-" << res[i].energy << "/n";
+					cout << res[i].name << "-" << res[i].energy << "\n";
 				}
 			}
 			else if (num < 0) {
 				// print information of customers at table in counterclockwise order
 				for (int i = 0; i < count; i++) {
-					cout << res[i].name << "-" << res[i].energy << "/n";
+					cout << res[i].name << "-" << res[i].energy << "\n";
 				}
 			}
 			else {
 				// print information of customers in queue in order
 				for (int i = 0; i < queued; i++) {
-					cout << queueing[i].name << "-" << queueing[i].energy << "/n";
+					cout << queueing[i].name << "-" << queueing[i].energy << "\n";
 				}
 			}
 		}
